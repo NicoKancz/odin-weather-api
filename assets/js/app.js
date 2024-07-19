@@ -1,7 +1,6 @@
 let fetchURL = "";
-let body = document.querySelector("body");
-let span = document.createElement("span");
-let span2 = document.createElement("span");
+let address = document.querySelector("#address");
+let temp = document.querySelector("#temperature");
 
 function setLocation(location) {
     fetchURL = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/
@@ -15,10 +14,8 @@ async function showData() {
         const jsonData = await response.json();
         console.log(jsonData);
         console.log(jsonData.description);
-        span.innerText = jsonData.resolvedAddress + "\n";
-        span2.innerText = jsonData.currentConditions.temp + " °C";
-        body.appendChild(span);
-        body.appendChild(span2);
+        address.innerText = jsonData.resolvedAddress + "\n";
+        temp.innerText = jsonData.currentConditions.temp + " °C";
     } else {
         alert("HTTP-Error: " + response.status);
     }

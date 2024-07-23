@@ -25,16 +25,24 @@ async function showData() {
         const jsonData = await response.json();
         console.log(jsonData);
 
-        let div = document.createElement("div");
-        let address = document.createElement("span")
-        let temp = document.createElement("span")
+        for(let i=0; i<7; i++) {
+            let div = document.createElement("div");
+            let date = document.createElement("p")
+            let temp = document.createElement("p")
+            let minTemp = document.createElement("p")
+            let maxTemp = document.createElement("p")
 
-        address.innerText = jsonData.resolvedAddress + "\n";
-        temp.innerText = jsonData.currentConditions.temp + " °C";
+            date.innerText = jsonData.days[i].datetime;
+            temp.innerText = jsonData.days[i].temp + " °C";
+            minTemp.innerText = "Min\n" + jsonData.days[i].tempmin + " °C";
+            maxTemp.innerText = "Max\n" + jsonData.days[i].tempmax + " °C";
 
-        div.appendChild(address);
-        div.appendChild(temp);
-        sectionWeatherDay.appendChild(div);
+            div.appendChild(date);
+            div.appendChild(temp);
+            div.appendChild(minTemp);
+            div.appendChild(maxTemp);
+            sectionWeatherDay.appendChild(div);
+        }
     } else {
         alert("HTTP-Error: " + response.status);
     }

@@ -1,13 +1,14 @@
 let fetchURL = "";
 let form = document.querySelector("form");
-let address = document.querySelector("#address");
-let temp = document.querySelector("#temperature");
+let inputLocation = document.querySelector("input[name='location']");
+let sectionWeatherDay = document.querySelector("#weatherByDay");
+let sectionWeatherDetails = document.querySelector("#weatherDetails");
+let sectionWeatherHour = document.querySelector("#weatherByHour");
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    let location = document.querySelector("input[name='location']");
-    let locationValue = location.value;
+    let locationValue = inputLocation.value;
     setLocation(locationValue);
     showData();
 })
@@ -24,8 +25,16 @@ async function showData() {
         const jsonData = await response.json();
         console.log(jsonData);
 
+        let div = document.createElement("div");
+        let address = document.createElement("span")
+        let temp = document.createElement("span")
+
         address.innerText = jsonData.resolvedAddress + "\n";
         temp.innerText = jsonData.currentConditions.temp + " °C";
+
+        div.appendChild(address);
+        div.appendChild(temp);
+        sectionWeatherDay.appendChild(div);
     } else {
         alert("HTTP-Error: " + response.status);
     }

@@ -1,16 +1,16 @@
 let fetchURL = "";
-let form = document.querySelector("form");
-let inputLocation = document.querySelector("input[name='location']");
-let sectionWeatherDay = document.querySelector("#weatherByDay");
-let sectionWeatherDetails = document.querySelector("#weatherDetails");
-let sectionWeatherHour = document.querySelector("#weatherByHour");
+const form = document.querySelector("form");
+const inputLocation = document.querySelector("input[name='location']");
+const sectionWeatherDay = document.querySelector("#weatherByDay");
+const sectionWeatherDetails = document.querySelector("#weatherDetails");
+const sectionWeatherHour = document.querySelector("#weatherByHour");
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     let locationValue = inputLocation.value;
     setLocation(locationValue);
-    showData();
+    fetchData();
 })
 
 function setLocation(location) {
@@ -18,32 +18,68 @@ function setLocation(location) {
         ${location}?unitGroup=metric&key=KA52FBCELJKYANAYNJGU89WD9&contentType=json`;
 }
 
-async function showData() {
+async function fetchData() {
     let response = await fetch(fetchURL);
 
     if(response.ok) {
         const jsonData = await response.json();
         console.log(jsonData);
-
-        for(let i=0; i<7; i++) {
-            let div = document.createElement("div");
-            let date = document.createElement("p")
-            let temp = document.createElement("p")
-            let minTemp = document.createElement("p")
-            let maxTemp = document.createElement("p")
-
-            date.innerText = jsonData.days[i].datetime;
-            temp.innerText = jsonData.days[i].temp + " °C";
-            minTemp.innerText = "Min\n" + jsonData.days[i].tempmin + " °C";
-            maxTemp.innerText = "Max\n" + jsonData.days[i].tempmax + " °C";
-
-            div.appendChild(date);
-            div.appendChild(temp);
-            div.appendChild(minTemp);
-            div.appendChild(maxTemp);
-            sectionWeatherDay.appendChild(div);
-        }
+        showData(jsonData);
     } else {
         alert("HTTP-Error: " + response.status);
     }
+}
+
+function showData(jsonData) {
+    for(let i=0; i<7; i++) {
+        const div = document.createElement("div");
+        div.setAttribute("data-index-number", i);
+        const date = document.createElement("p");
+        date.addEventListener("click", () => {showDetails(i, jsonData)});
+        const temp = document.createElement("p");
+        const minTemp = document.createElement("p");
+        const maxTemp = document.createElement("p");
+
+        let data = jsonData.days[i];
+        date.innerText = data.datetime;
+        temp.innerText = data.temp + " °C";
+        minTemp.innerText = "Min\n" + data.tempmin + " °C";
+        maxTemp.innerText = "Max\n" + data.tempmax + " °C";
+
+        div.appendChild(date);
+        div.appendChild(temp);
+        div.appendChild(minTemp);
+        div.appendChild(maxTemp);
+        sectionWeatherDay.appendChild(div);
+    }
+}
+
+function showDetails(index, jsonData) {
+    const div = document.createElement("div");
+    const date = document.createElement("h2");
+    const description = document.createElement("p");
+    const details = document.createElement("div");
+    const detailsText = document.createElement("p");
+    const warnings = document.createElement("div");
+    const warningsText = document.createElement("p");
+
+    let data = jsonData.days[index];
+    detailsText.innerText = `Sunrise: ${data.sunrise}\n
+        Sunset: ${data.sunset}\n
+        Windspeed: ${data.windspeed}`;
+    warningsText.innerText = `UV Index: ${data.uvindex}\n
+        Visibility: ${data.visibility}\n
+        Snow: ${data.snow}`;
+
+    details.appendChild(detailsText);
+    warnings.appendChild(warningsText);
+
+    description.innerText = data.description;
+    date.innerText = data.datetime;
+
+    div.appendChild(date);
+    div.appendChild(description);
+    div.appendChild(details);
+    div.appendChild(warnings);
+    sectionWeatherDetails.appendChild(div);
 }

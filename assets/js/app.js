@@ -36,6 +36,7 @@ function showData(jsonData) {
         div.setAttribute("data-index-number", i);
         const date = document.createElement("p");
         date.addEventListener("click", () => {showDetails(i, jsonData)});
+        date.addEventListener("click", () => {showByHour(i, jsonData)});
         const temp = document.createElement("p");
         const minTemp = document.createElement("p");
         const maxTemp = document.createElement("p");
@@ -64,10 +65,12 @@ function showDetails(index, jsonData) {
     const warningsText = document.createElement("p");
 
     let data = jsonData.days[index];
-    detailsText.innerText = `Sunrise: ${data.sunrise}\n
+    detailsText.innerText = `Details: 
+        Sunrise: ${data.sunrise}\n
         Sunset: ${data.sunset}\n
         Windspeed: ${data.windspeed}`;
-    warningsText.innerText = `UV Index: ${data.uvindex}\n
+    warningsText.innerText = `Warnings: 
+        UV Index: ${data.uvindex}\n
         Visibility: ${data.visibility}\n
         Snow: ${data.snow}`;
 
@@ -82,4 +85,20 @@ function showDetails(index, jsonData) {
     div.appendChild(details);
     div.appendChild(warnings);
     sectionWeatherDetails.appendChild(div);
+}
+
+function showByHour(index, jsonData) {
+    for(let i=0; i<7; i++) {
+        const div = document.createElement("div");
+        const hour = document.createElement("p");
+        const temp = document.createElement("p");
+
+        let data = jsonData.days[index].hours[i];
+        hour.innerText = data.datetime;
+        temp.innerText = data.temp + " °C";
+
+        div.appendChild(hour);
+        div.appendChild(temp);
+        sectionWeatherHour.appendChild(div);
+    }
 }

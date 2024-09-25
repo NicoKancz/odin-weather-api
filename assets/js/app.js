@@ -1,4 +1,5 @@
 let fetchURL = "";
+let toggle = false; //boolean to check if details and by hour are hidden or not
 const form = document.querySelector("form");
 const inputLocation = document.querySelector("input[name='location']");
 const sectionWeatherDay = document.querySelector("#weatherByDay");
@@ -31,12 +32,33 @@ async function fetchData() {
 }
 
 function showData(jsonData) {
+    let dataIndex = 0;
+
     for(let i=0; i<7; i++) {
         const div = document.createElement("div");
-        div.setAttribute("data-index-number", i);
+        div.setAttribute("data-index", i);
         const date = document.createElement("p");
-        date.addEventListener("click", () => {showDetails(i, jsonData)});
-        date.addEventListener("click", () => {showByHour(i, jsonData)});
+
+        //show the details and data by hour on website by clicking on the datum of a day
+        div.addEventListener("click", () => {
+            if(! div.hasAttribute("data-toggle")) {
+                if (toggle) {
+                    removeDOM();
+                    document.querySelector(`[data-index="${dataIndex}"]`).toggleAttribute("data-toggle");
+                    toggle = false;
+                }
+                showDetails(i, jsonData);
+                showByHour(i, jsonData);
+                toggle = true;
+                dataIndex = div.getAttribute("data-index");
+                div.toggleAttribute("data-toggle");
+            } else {
+                removeDOM();
+                toggle = false;
+                div.toggleAttribute("data-toggle");
+            }
+        });
+         
         const temp = document.createElement("p");
         const minTemp = document.createElement("p");
         const maxTemp = document.createElement("p");
@@ -65,11 +87,11 @@ function showDetails(index, jsonData) {
     const warningsText = document.createElement("p");
 
     let data = jsonData.days[index];
-    detailsText.innerText = `Details: 
+    detailsText.innerText = `Details:\n 
         Sunrise: ${data.sunrise}\n
         Sunset: ${data.sunset}\n
         Windspeed: ${data.windspeed}`;
-    warningsText.innerText = `Warnings: 
+    warningsText.innerText = `Warnings:\n 
         UV Index: ${data.uvindex}\n
         Visibility: ${data.visibility}\n
         Snow: ${data.snow}`;
@@ -100,5 +122,15 @@ function showByHour(index, jsonData) {
         div.appendChild(hour);
         div.appendChild(temp);
         sectionWeatherHour.appendChild(div);
+    }
+}
+
+function removeDOM() {
+    while(sectionWeatherDetails.firstChild) {
+        sectionWeatherDetails.firstChild.remove();
+    }
+    
+    while(sectionWeatherHour.firstChild) {
+        sectionWeatherHour.firstChild.remove();
     }
 }

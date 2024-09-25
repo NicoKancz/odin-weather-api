@@ -43,7 +43,7 @@ function showData(jsonData) {
         div.addEventListener("click", () => {
             if(! div.hasAttribute("data-toggle")) {
                 if (toggle) {
-                    removeDOM();
+                    removeDOM([sectionWeatherDetails, sectionWeatherHour]);
                     document.querySelector(`[data-index="${dataIndex}"]`).toggleAttribute("data-toggle");
                     toggle = false;
                 }
@@ -53,7 +53,7 @@ function showData(jsonData) {
                 dataIndex = div.getAttribute("data-index");
                 div.toggleAttribute("data-toggle");
             } else {
-                removeDOM();
+                removeDOM([sectionWeatherDetails, sectionWeatherHour]);
                 toggle = false;
                 div.toggleAttribute("data-toggle");
             }
@@ -125,12 +125,11 @@ function showByHour(index, jsonData) {
     }
 }
 
-function removeDOM() {
-    while(sectionWeatherDetails.firstChild) {
-        sectionWeatherDetails.firstChild.remove();
-    }
-    
-    while(sectionWeatherHour.firstChild) {
-        sectionWeatherHour.firstChild.remove();
+//function for removing DOM elements by taking array of elements
+function removeDOM(elements) {
+    for (let element of elements) {
+        while(element.firstChild) {
+            element.firstChild.remove();
+        }
     }
 }

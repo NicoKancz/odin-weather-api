@@ -31,62 +31,94 @@ async function fetchData() {
     }
 }
 
+function getDayName(day) {
+    switch (day) {
+        case 0:
+            return "Sunday";
+        case 1:
+            return "Monday";
+        case 2:
+            return "Tuesday";
+        case 3:
+            return "Wednesday";
+        case 4:
+            return "Thursday";
+        case 5:
+            return "Friday";
+        case 6:
+            return "Saturday";
+        default:
+            return day;
+    }
+}
+
 function showData(jsonData) {
     let dataIndex = 0;
 
     for(let i=0; i<7; i++) {
-        const div = document.createElement("div");
-        div.setAttribute("data-index", i);
+        const container = document.createElement("div");
+        container.setAttribute("data-index", i);
         const date = document.createElement("p");
+        const temp = document.createElement("p");
+        const conditions = document.createElement("p");
+        const minTemp = document.createElement("p");
+        const maxTemp = document.createElement("p");
+        const containerMinMaxTemp = document.createElement("div");
 
         //show the details and data by hour on website by clicking on the datum of a day
-        div.addEventListener("click", () => {
-            if(! div.hasAttribute("data-toggle")) {
+        container.addEventListener("click", () => {
+            if(! container.hasAttribute("data-toggle")) {
                 if (toggle) {
-                    removeDOM([sectionWeatherDetails, sectionWeatherHour]);
+                    removeElements([sectionWeatherDetails, sectionWeatherHour]);
                     document.querySelector(`[data-index="${dataIndex}"]`).toggleAttribute("data-toggle");
                     toggle = false;
                 }
                 showDetails(i, jsonData);
                 showByHour(i, jsonData);
                 toggle = true;
-                dataIndex = div.getAttribute("data-index");
-                div.toggleAttribute("data-toggle");
+                dataIndex = container.getAttribute("data-index");
+                container.toggleAttribute("data-toggle");
             } else {
-                removeDOM([sectionWeatherDetails, sectionWeatherHour]);
+                removeElements([sectionWeatherDetails, sectionWeatherHour]);
                 toggle = false;
-                div.toggleAttribute("data-toggle");
+                container.toggleAttribute("data-toggle");
             }
         });
          
-        const temp = document.createElement("p");
-        const minTemp = document.createElement("p");
-        const maxTemp = document.createElement("p");
-
         let data = jsonData.days[i];
-        date.innerText = data.datetime;
+        let dayOfTheWeek = new Date(data.datetime);
+
+        date.innerText = getDayName(dayOfTheWeek.getDay()) + "\n" + data.datetime;
         temp.innerText = data.temp + " °C";
+        conditions.innerText = data.conditions;
         minTemp.innerText = "Min\n" + data.tempmin + " °C";
         maxTemp.innerText = "Max\n" + data.tempmax + " °C";
 
-        div.appendChild(date);
-        div.appendChild(temp);
-        div.appendChild(minTemp);
-        div.appendChild(maxTemp);
-        sectionWeatherDay.appendChild(div);
+        containerMinMaxTemp.appendChild(minTemp);
+        containerMinMaxTemp.appendChild(maxTemp);
+        container.appendChild(date);
+        container.appendChild(temp);
+        container.appendChild(conditions);
+        container.appendChild(containerMinMaxTemp);
+        sectionWeatherDay.appendChild(container);
     }
 }
 
 function showDetails(index, jsonData) {
-    const div = document.createElement("div");
+    const container = document.createElement("div");
     const date = document.createElement("h2");
     const description = document.createElement("p");
+    const subcontainer = document.createElement("div");
     const details = document.createElement("div");
     const detailsText = document.createElement("p");
     const warnings = document.createElement("div");
     const warningsText = document.createElement("p");
 
     let data = jsonData.days[index];
+    let dayOfTheWeek = new Date(data.datetime);
+
+    date.innerText = getDayName(dayOfTheWeek.getDay()) + " " + data.datetime;
+    description.innerText = data.description;
     detailsText.innerText = `Details:\n 
         Sunrise: ${data.sunrise}\n
         Sunset: ${data.sunset}\n
@@ -99,34 +131,37 @@ function showDetails(index, jsonData) {
     details.appendChild(detailsText);
     warnings.appendChild(warningsText);
 
-    description.innerText = data.description;
-    date.innerText = data.datetime;
+    subcontainer.appendChild(details);
+    subcontainer.appendChild(warnings);
 
-    div.appendChild(date);
-    div.appendChild(description);
-    div.appendChild(details);
-    div.appendChild(warnings);
-    sectionWeatherDetails.appendChild(div);
+    container.appendChild(date);
+    container.appendChild(description);
+    container.appendChild(subcontainer);
+    sectionWeatherDetails.appendChild(container);
 }
 
 function showByHour(index, jsonData) {
-    for(let i=0; i<7; i++) {
-        const div = document.createElement("div");
+    for(let i=0; i<10; i++) {
+        const container = document.createElement("div");
         const hour = document.createElement("p");
+        const conditions = document.createElement("p");
         const temp = document.createElement("p");
 
         let data = jsonData.days[index].hours[i];
+        
         hour.innerText = data.datetime;
+        conditions.innerText = data.conditions;
         temp.innerText = data.temp + " °C";
 
-        div.appendChild(hour);
-        div.appendChild(temp);
-        sectionWeatherHour.appendChild(div);
+        container.appendChild(hour);
+        container.appendChild(conditions);
+        container.appendChild(temp);
+        sectionWeatherHour.appendChild(container);
     }
 }
 
 //function for removing DOM elements by taking array of elements
-function removeDOM(elements) {
+function removeElements(elements) {
     for (let element of elements) {
         while(element.firstChild) {
             element.firstChild.remove();

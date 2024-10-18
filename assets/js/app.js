@@ -24,7 +24,7 @@ async function fetchData() {
 
     if(response.ok) {
         const jsonData = await response.json();
-        console.log(jsonData);
+        // console.log(jsonData);
         showData(jsonData);
     } else {
         alert("HTTP-Error: " + response.status);
@@ -141,7 +141,7 @@ function showDetails(index, jsonData) {
 }
 
 function showByHour(index, jsonData) {
-    for(let i=0; i<10; i++) {
+    for(let i=0; i<7; i++) {
         const container = document.createElement("div");
         const hour = document.createElement("p");
         const conditions = document.createElement("p");

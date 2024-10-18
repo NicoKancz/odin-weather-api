@@ -1,19 +1,26 @@
 /* reset css */
-body, h1, p {
+body, h1, h2, p {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url(../images/clouds-8353592_1920.jpg);
 }
 
 /* custom properties */
 :root {
-    --blue-color: #9599c9;
+    --background-color-gray: rgba(169, 169, 169, 0.41);
+    --background-color-weather: rgb(227, 225, 225);
+    --background-color-hover: rgb(157, 202, 246);
 }
 
 /* header section */
 header {
     display: flex;
     align-items: center;
-    background-color: var(--blue-color);
+    background-color: var(--background-color-gray);
     height: 25vh;
 }
 
@@ -21,10 +28,10 @@ header>h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255,255,255,0.3);
+    background-color: rgba(255,255,255,0.7);
     border: solid black 4px;
     border-radius: 50px;
-    margin-left: 5vw;
+    margin-left: 10vw;
     width: 300px;
     height: 16vh;
 }
@@ -32,21 +39,21 @@ header>h1 {
 /* main section */
 main {
     display: grid;
-    align-items: center;
-    grid-template-rows: 15vh 1fr 1fr 1fr;
-    background-image: url(../images/clouds-8353592_1920.jpg);
-    background-repeat: no-repeat;
-    object-fit: cover;
+    justify-items: stretch;
+    justify-content: center;
+    grid-template-rows: 15vh auto auto auto;
+    grid-template-columns: 80vw;
+    row-gap: 2vh;
     min-height: 65vh;
 }
 
 main form {
     display: flex;
-    justify-content: center;
+    align-items: center;
 }
 
 main input {
-    background-color: rgba(255,255,255,0.3);
+    background-color: var(--background-color-gray);
     font-size: 35px;
     font-weight: 900;
     width: 18vw;
@@ -58,41 +65,98 @@ main input {
 }
 
 main input:hover {
-    background-color: white;
+    background-color: rgba(255,255,255,0.7);
 }
 
 main input:focus {
-    background-color: white;
+    background-color: rgba(255,255,255,0.7);
 }
 
+/* Weather information sections */
 main #weatherByDay {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 15px;
 }
 
 main #weatherByDay>div {
     display: grid;
     grid-template-rows: 1fr 2fr 1fr;
-    color: black;
-    background-color: var(--blue-color);
-    width: 10vw;
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    background-color: var(--background-color-weather);
+    border-radius: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 35vh;
+    cursor: pointer;
+}
+
+main #weatherByDay>div:hover {
+    background-color: var(--background-color-hover);
+}
+
+main #weatherByDay>div:focus {
+    background-color: var(--background-color-hover);
+}
+
+main #weatherByDay>div>p:nth-child(2) {
+    font-size: 35px;
+    align-self: center;
+}
+
+main #weatherByDay>div>div {
+    display: flex;
+    justify-content: center;
+    column-gap: 1vw;
+}
+
+main #weatherByHour {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 15px;
+    width: auto;
+}
+
+main #weatherByHour>div {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    background-color: var(--background-color-weather);
+    border-radius: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     height: 20vh;
 }
 
-
-
-main #weatherByHour {
-    display: flex;
-    justify-content: space-around;
-}
-
 main #weatherDetails {
-    display: flex;
-    justify-content: center;
+    justify-items: stretch;
+    margin-bottom: 4vh;
 }
 
-section {
-    color: white;
+main #weatherDetails>div {
+    display: grid;
+    grid-template-rows: 5vh 5vh 25vh;
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    background-color: var(--background-color-weather);
+    border-radius: 0 0 5px 5px;
+    padding-top: 5px;
+    height: 40vh;
+}
+
+main #weatherDetails>div>p {
+    border-bottom: black solid 1px;
+}
+
+main #weatherDetails>div>div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 /* footer section */
@@ -100,6 +164,8 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--blue-color);
+    background-color: var(--background-color-gray);
     height: 10vh;
+    font-size: larger;
+    font-weight: bold;
 }

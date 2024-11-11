@@ -9,6 +9,8 @@ const sectionWeatherHour = document.querySelector("#weatherByHour");
 form.addEventListener("submit", (e) => {
     e.preventDefault();
 
+    removeElements([sectionWeatherDay, sectionWeatherDetails, sectionWeatherHour]);
+
     let locationValue = inputLocation.value;
     setLocation(locationValue);
     fetchData();
@@ -16,18 +18,18 @@ form.addEventListener("submit", (e) => {
 
 function setLocation(location) {
     fetchURL = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/
-        ${location}?unitGroup=metric&key=KA52FBCELJKYANAYNJGU89WD9&contentType=json`;
+    ${location}?unitGroup=metric&key=KA52FBCELJKYANAYNJGU89WD9&contentType=json`;
 }
 
 async function fetchData() {
     let response = await fetch(fetchURL);
-
+    
     if(response.ok) {
         const jsonData = await response.json();
-        // console.log(jsonData);
+        //console.log(jsonData);
         showData(jsonData);
     } else {
-        alert("HTTP-Error: " + response.status);
+        alert(`The City is unknown. \nEnter a valid city for weather information. \nFor example Leuven.`);
     }
 }
 

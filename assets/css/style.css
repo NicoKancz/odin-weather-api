@@ -212,6 +212,52 @@ footer {
         font-weight: normal;
         font-size: 20px;
     }
+}
+
+@media screen and (max-width: 728px) {
+    main input {
+        font-size: 14px;
+        font-weight: bold;
+        height: 4vh;
+        border: black solid 2px;
+        border-radius: 10px;
+        padding-left: 2vw;
+    }
+
+    main #weatherByDay {
+        grid-template-columns: repeat(7, 11vw);
+        column-gap: 1vw;
+    }
+    
+    main #weatherByDay>div {
+        font-weight: normal;
+        font-size: 9px;
+        height: 120px;
+    }
+
+    main #weatherByDay>div>p:nth-child(2) {
+        font-size: 12px;
+        align-self: center;
+        width: 8vw;
+        border: 2px solid var(--background-color-weather2);
+        border-radius: 20px;
+    }
+
+    main #weatherByHour {
+        grid-template-columns: repeat(7, 11vw);
+        column-gap: 1vw;
+    }
+
+    main #weatherByHour>div {
+        font-size: 10px;
+        height: 80px;
+    }
+
+    main #weatherDetails>div {
+        font-weight: normal;
+        font-size: 12px;
+    }
+}
 
 @media screen and (max-width: 425px) {
     header {
@@ -273,6 +319,4 @@ footer {
     footer {
         font-size: 10px;
     }
-}
-
 }

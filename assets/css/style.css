@@ -16,6 +16,7 @@ body {
 /* custom properties */
 :root {
     --background-color-weather: rgb(227, 225, 225, 0.5);
+    --background-color-weather2: rgb(3, 15, 73);
     --background-color-hover: rgb(157, 202, 246);
 }
 
@@ -45,7 +46,6 @@ main {
     justify-items: stretch;
     justify-content: center;
     grid-template-rows: 15vh auto auto auto;
-    grid-template-columns: 80vw;
     row-gap: 2vh;
     min-height: 65vh;
 }
@@ -59,7 +59,7 @@ main input {
     background-color: var(--background-color-weather);
     font-size: 35px;
     font-weight: 900;
-    width: 18vw;
+    width: 100%;
     height: 7vh;
     border: black solid 4px;
     border-radius: 20px;
@@ -77,21 +77,21 @@ main input:focus {
 /* Weather information sections */
 main #weatherByDay {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    column-gap: 15px;
+    grid-template-columns: repeat(7, 10vw);
+    column-gap: 2vw;
 }
 
 main #weatherByDay>div {
     display: grid;
-    grid-template-rows: 1fr 2fr 1fr;
+    grid-template-rows: 20% 30% 30% 20%;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 20px;
     text-align: center;
     background-color: var(--background-color-weather);
     border-radius: 5px;
     padding-top: 5px;
     padding-bottom: 5px;
-    height: 35vh;
+    height: 250px;
     cursor: pointer;
     backdrop-filter: blur(20px);
 }
@@ -105,8 +105,12 @@ main #weatherByDay>div:focus {
 }
 
 main #weatherByDay>div>p:nth-child(2) {
-    font-size: 35px;
+    font-size: 28px;
+    justify-self: center;
     align-self: center;
+    width: 8vw;
+    border: var(--background-color-weather2) 4px solid;
+    border-radius: 20px;
 }
 
 main #weatherByDay>div>div {
@@ -117,14 +121,15 @@ main #weatherByDay>div>div {
 
 main #weatherByHour {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    column-gap: 15px;
+    grid-template-columns: repeat(7, 10vw);
+    column-gap: 2vw;
     width: auto;
 }
 
 main #weatherByHour>div {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 30% 40% 30%;
+    align-items: center;
     font-weight: bold;
     font-size: 25px;
     text-align: center;
@@ -132,8 +137,15 @@ main #weatherByHour>div {
     border-radius: 5px;
     padding-top: 5px;
     padding-bottom: 5px;
-    height: 20vh;
+    height: 150px;
     backdrop-filter: blur(20px);
+}
+
+main #weatherByHour>div p:first-child {
+    justify-self: center;
+    align-self: center;
+    border-bottom: 2px solid var(--background-color-weather2);
+    width: 8vw;
 }
 
 main #weatherDetails {
@@ -143,14 +155,15 @@ main #weatherDetails {
 
 main #weatherDetails>div {
     display: grid;
-    grid-template-rows: 5vh 5vh 25vh;
+    grid-template-rows: 1fr 1fr 3fr;
+    grid-auto-rows: max-content;
     font-weight: bold;
     font-size: 25px;
     text-align: center;
     background-color: var(--background-color-weather);
     border-radius: 0 0 5px 5px;
     padding-top: 5px;
-    height: 40vh;
+    padding-bottom: 5px;
     backdrop-filter: blur(20px);
 }
 
@@ -160,7 +173,7 @@ main #weatherDetails>div>p {
 
 main #weatherDetails>div>div {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -174,4 +187,92 @@ footer {
     font-size: larger;
     font-weight: bold;
     backdrop-filter: blur(20px);
+}
+
+@media screen and (max-width: 1024px) {
+    main #weatherByDay>div {
+        font-weight: normal;
+        font-size: 12px;
+        height: 150px;
+    }
+
+    main #weatherByDay>div>p:nth-child(2) {
+        font-size: 15px;
+        align-self: center;
+        width: 8vw;
+        border-radius: 20px;
+    }
+
+    main #weatherByHour>div {
+        font-size: 12px;
+        height: 100px;
+    }
+
+    main #weatherDetails>div {
+        font-weight: normal;
+        font-size: 20px;
+    }
+
+@media screen and (max-width: 425px) {
+    header {
+        align-items: center;
+        justify-content: center;
+    }
+
+    header>h1 {
+        border: solid black 2px;
+        margin-left: 0;
+        font-size: 22px;
+        height: 12vh;
+    }
+
+    main input {
+        font-size: 14px;
+        font-weight: bold;
+        height: 4vh;
+        border: black solid 2px;
+        border-radius: 10px;
+        padding-left: 2vw;
+    }
+
+    main #weatherByDay {
+        grid-template-columns: repeat(7, 11vw);
+        column-gap: 1vw;
+    }
+
+    main #weatherByDay>div {
+        font-weight: normal;
+        font-size: 6px;
+        height: 70px;
+    }
+
+    main #weatherByDay>div>p:nth-child(2) {
+        font-size: 8px;
+        align-self: center;
+        width: 8.5vw;
+        border: 1.5px solid var(--background-color-weather2);
+        border-radius: 12px;
+    }
+
+    main #weatherByHour {
+        grid-template-columns: repeat(7, 11vw);
+        column-gap: 1vw;
+    }
+
+    main #weatherByHour>div {
+        font-weight: normal;
+        font-size: 6px;
+        height: 40px;
+    }
+
+    main #weatherDetails>div {
+        font-weight: normal;
+        font-size: 9px;
+    }
+
+    footer {
+        font-size: 10px;
+    }
+}
+
 }
